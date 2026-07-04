@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Nitro / Nitropack build output
+.nitro/
+.output/
+.data/
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Editor / OS
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# TypeScript
+*.tsbuildinfo
