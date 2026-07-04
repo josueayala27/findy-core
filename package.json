@@ -2,10 +2,20 @@
   "type": "module",
   "scripts": {
     "build": "nitro build",
-    "dev": "nitro dev"
+    "dev": "nitro dev",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "devDependencies": {
+    "drizzle-kit": "^0.31.10",
     "hono": "^4.12.9",
     "nitro": "latest"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.8.0",
+    "@neondatabase/serverless": "^1.1.0",
+    "drizzle-orm": "^0.45.2",
+    "zod": "^4.4.3"
   }
 }
