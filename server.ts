@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { authRoute } from "./src/routes/auth.route";
 import { meRoute } from "./src/routes/me.route";
+import { placesRoute } from "./src/routes/places.route";
 import { errorHandler } from "./src/middleware/error-handler";
 
 const app = new Hono();
@@ -11,5 +12,6 @@ app.get("/", (c) => c.text("Hello, Hono with Nitro!"));
 
 app.route("/auth", authRoute);
 app.route("/me", meRoute);
+app.route("/places", placesRoute);
 
 export default app;

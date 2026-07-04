@@ -5,12 +5,15 @@
     "dev": "nitro dev",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
+    "db:seed": "tsx src/db/seed.ts",
     "db:studio": "drizzle-kit studio"
   },
   "devDependencies": {
     "drizzle-kit": "^0.31.10",
     "hono": "^4.12.9",
-    "nitro": "latest"
+    "nitro": "latest",
+    "tsx": "^4.20.6",
+    "wrangler": "^4.107.0"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.8.0",
