@@ -14,5 +14,5 @@ export function signAuthToken(payload: { sub: string; email: string }): Promise<
 }
 
 export async function verifyAuthToken(token: string): Promise<AuthTokenPayload> {
-  return (await verify(token, process.env.JWT_SECRET!)) as AuthTokenPayload;
+  return (await verify(token, process.env.JWT_SECRET!, "HS256")) as AuthTokenPayload;
 }

@@ -7,14 +7,21 @@ import { users } from "../db/schema";
 import { hashPassword, verifyPassword } from "../lib/password";
 import { signAuthToken } from "../lib/jwt";
 
+const signupSchema = z.object({
+  firstName: z.string().min(1),
+  lastName: z.string().min(1),
+  email: z.string().email(),
+  password: z.string().min(8),
+});
+
 const credentialsSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
 });
 
 export const authRoute = new Hono()
-  .post("/signup", zValidator("json", credentialsSchema), async (c) => {
-    const { email, password } = c.req.valid("json");
+  .post("/signup", zValidator("json", signupSchema), async (c) => {
+    const { firstName, lastName, email, password } = c.req.valid("json");
     const db = getDb();
 
     const existing = await db.select().from(users).where(eq(users.email, email)).limit(1);
@@ -23,7 +30,7 @@ export const authRoute = new Hono()
     }
 
     const passwordHash = await hashPassword(password);
-    const [user] = await db.insert(users).values({ email, passwordHash }).returning();
+    const [user] = await db.insert(users).values({ firstName, lastName, email, passwordHash }).returning();
 
     const token = await signAuthToken({ sub: user.id, email: user.email });
     return c.json({ token }, 201);
@@ -33,7 +40,7 @@ export const authRoute = new Hono()
     const db = getDb();
 
     const [user] = await db.select().from(users).where(eq(users.email, email)).limit(1);
-    if (!user || !(await verifyPassword(password, user.passwordHash))) {
+    if (!user || !user.passwordHash || !(await verifyPassword(password, user.passwordHash))) {
       return c.json({ error: "Invalid email or password" }, 401);
     }
 
