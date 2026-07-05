@@ -1,0 +1,7 @@
+overrides:
+  srvx: 0.11.20
+
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: true
