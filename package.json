@@ -6,13 +6,15 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:seed": "tsx src/db/seed.ts",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "test": "vitest run"
   },
   "devDependencies": {
     "drizzle-kit": "^0.31.10",
     "hono": "^4.12.9",
     "nitro": "latest",
     "tsx": "^4.20.6",
+    "vitest": "*",
     "wrangler": "^4.107.0"
   },
   "dependencies": {
