@@ -10,6 +10,7 @@ import {
   doublePrecision,
   integer,
   bigint,
+  boolean,
   numeric,
   date,
 } from "drizzle-orm/pg-core";
@@ -71,6 +72,12 @@ export const places = pgTable("places", {
   lat: doublePrecision(),
   lng: doublePrecision(),
   category: text(),
+  suspiciousLocation: boolean("suspicious_location").default(false).notNull(),
+  googlePlaceId: text("google_place_id"),
+  verificationStatus: text("verification_status").default("unverified").notNull(),
+  verificationScore: numeric("verification_score"),
+  department: text(),
+  municipality: text(),
   mentionCount: integer("mention_count").default(0).notNull(),
   totalLikes: bigint("total_likes", { mode: "number" }).default(0).notNull(),
   totalComments: bigint("total_comments", { mode: "number" }).default(0).notNull(),
@@ -80,6 +87,7 @@ export const places = pgTable("places", {
   updatedAt: timestamp("updated_at", { withTimezone: true, mode: "string" }).defaultNow().notNull(),
 }, (table) => [
   uniqueIndex("places_canonical_name_key").using("btree", table.canonicalName.asc().nullsLast().op("text_ops")),
+  uniqueIndex("places_google_place_id_key").using("btree", table.googlePlaceId.asc().nullsLast().op("text_ops")),
 ]);
 
 export const placeMentions = pgTable("place_mentions", {
@@ -94,16 +102,27 @@ export const placeMentions = pgTable("place_mentions", {
   bookmarks: integer().default(0).notNull(),
   summary: text(),
   locationText: text("location_text"),
+  transcript: text(),
+  source: text().default("tiktok").notNull(),
+  sourceUrl: text("source_url"),
+  evidence: text(),
   createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow().notNull(),
 }, (table) => [
   index("place_mentions_place_id_idx").using("btree", table.placeId.asc().nullsLast().op("uuid_ops")),
-  uniqueIndex("place_mentions_video_id_key").using("btree", table.videoId.asc().nullsLast().op("text_ops")),
   foreignKey({
     columns: [table.placeId],
     foreignColumns: [places.id],
     name: "place_mentions_place_id_fkey",
   }).onDelete("cascade"),
 ]);
+
+export const webSources = pgTable("web_sources", {
+  url: text().primaryKey().notNull(),
+  domain: text().notNull(),
+  category: text(),
+  scrapedAt: timestamp("scraped_at", { withTimezone: true, mode: "string" }).defaultNow().notNull(),
+  status: text().default("pending").notNull(),
+});
 
 export const clickedPlaces = pgTable("clicked_places", {
   uuid: uuid().primaryKey().notNull(),

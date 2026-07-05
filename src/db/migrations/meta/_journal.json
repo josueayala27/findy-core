@@ -8,6 +8,20 @@
       "when": 1783212831598,
       "tag": "0000_classy_mantis",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1783212831600,
+      "tag": "0001_align_workflow_schema",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1783212831601,
+      "tag": "0002_verification_web_sources",
+      "breakpoints": true
     }
   ]
 }
