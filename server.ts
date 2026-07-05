@@ -4,6 +4,8 @@ import { authRoute } from "./src/routes/auth.route";
 import { meRoute } from "./src/routes/me.route";
 import { placesRoute } from "./src/routes/places.route";
 import { clickedPlacesRoute } from "./src/routes/clicked-places.route";
+import { placeListsRoute, sharedPlaceListsRoute } from "./src/routes/place-lists.route";
+
 import { errorHandler } from "./src/middleware/error-handler";
 
 const app = new Hono();
@@ -26,5 +28,7 @@ app.route("/auth", authRoute);
 app.route("/me", meRoute);
 app.route("/places", placesRoute);
 app.route("/clicked-places", clickedPlacesRoute);
+app.route("/place-lists", placeListsRoute);
+app.route("/shared", sharedPlaceListsRoute);
 
 export default app;

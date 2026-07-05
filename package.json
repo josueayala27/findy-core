@@ -6,7 +6,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:seed": "tsx src/db/seed.ts",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "test": "vitest run"
   },
   "devDependencies": {
     "@rolldown/binding-win32-x64-msvc": "^1.1.4",
@@ -15,6 +16,7 @@
     "jiti": "^2.7.0",
     "nitro": "latest",
     "tsx": "^4.20.6",
+    "vitest": "*",
     "wrangler": "^4.107.0"
   },
   "dependencies": {

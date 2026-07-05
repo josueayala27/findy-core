@@ -3,12 +3,10 @@ import { eq } from "drizzle-orm";
 import { getDb } from "../db/client";
 import { places, placeMentions } from "../db/schema";
 import type { Place, PlaceMention } from "../features/places/types";
+import { isUuid } from "../lib/uuid";
 
 type PlaceRow = typeof places.$inferSelect;
 type MentionRow = typeof placeMentions.$inferSelect;
-
-const UUID_RE =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function toMention(row: MentionRow): PlaceMention {
   return {
@@ -51,7 +49,7 @@ function toPlace(row: PlaceRow, mentions: MentionRow[]): Place {
 
 export const placesRoute = new Hono().get("/:id", async (c) => {
   const id = c.req.param("id");
-  if (!UUID_RE.test(id)) {
+  if (!isUuid(id)) {
     return c.json({ error: "Invalid place id" }, 400);
   }
 

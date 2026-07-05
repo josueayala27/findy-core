@@ -111,3 +111,41 @@ export const clickedPlaces = pgTable("clicked_places", {
   placeId: text("place_id"),
   creation: date(),
 });
+
+export const placeLists = pgTable("place_lists", {
+  id: uuid().defaultRandom().primaryKey().notNull(),
+  userId: uuid("user_id").notNull(),
+  name: text().notNull(),
+  description: text(),
+  shareToken: uuid("share_token"),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "string" }).defaultNow().notNull(),
+}, (table) => [
+  index("place_lists_user_id_idx").using("btree", table.userId.asc().nullsLast().op("uuid_ops")),
+  uniqueIndex("place_lists_share_token_key").using("btree", table.shareToken.asc().nullsLast().op("uuid_ops")),
+  foreignKey({
+    columns: [table.userId],
+    foreignColumns: [users.id],
+    name: "place_lists_user_id_fkey",
+  }).onDelete("cascade"),
+]);
+
+export const placeListItems = pgTable("place_list_items", {
+  id: uuid().defaultRandom().primaryKey().notNull(),
+  listId: uuid("list_id").notNull(),
+  placeId: uuid("place_id").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow().notNull(),
+}, (table) => [
+  index("place_list_items_list_id_idx").using("btree", table.listId.asc().nullsLast().op("uuid_ops")),
+  foreignKey({
+    columns: [table.listId],
+    foreignColumns: [placeLists.id],
+    name: "place_list_items_list_id_fkey",
+  }).onDelete("cascade"),
+  foreignKey({
+    columns: [table.placeId],
+    foreignColumns: [places.id],
+    name: "place_list_items_place_id_fkey",
+  }).onDelete("cascade"),
+  unique("place_list_items_list_id_place_id_key").on(table.listId, table.placeId),
+]);
