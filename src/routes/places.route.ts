@@ -12,6 +12,8 @@ function toMention(row: MentionRow): PlaceMention {
   return {
     id: row.id,
     videoId: row.videoId,
+    source: row.source,
+    sourceUrl: row.sourceUrl,
     sentiment: row.sentiment,
     sentimentScore: Number(row.sentimentScore),
     likes: row.likes,
@@ -20,6 +22,7 @@ function toMention(row: MentionRow): PlaceMention {
     bookmarks: row.bookmarks,
     summary: row.summary,
     locationText: row.locationText,
+    evidence: row.evidence,
     createdAt: row.createdAt,
   };
 }
@@ -33,6 +36,14 @@ function toPlace(row: PlaceRow, mentions: MentionRow[]): Place {
       text: row.locationText,
       lat: row.lat,
       lng: row.lng,
+      department: row.department,
+      municipality: row.municipality,
+    },
+    verification: {
+      status: row.verificationStatus,
+      score: row.verificationScore ? Number(row.verificationScore) : null,
+      suspiciousLocation: row.suspiciousLocation,
+      googlePlaceId: row.googlePlaceId,
     },
     trending: {
       mentionCount: row.mentionCount,
