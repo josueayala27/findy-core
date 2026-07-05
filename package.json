@@ -1,16 +1,18 @@
 {
   "type": "module",
   "scripts": {
-    "build": "nitro build",
-    "dev": "nitro dev",
+    "build": "npx -y node@22.14.0 node_modules/nitro/dist/cli/index.mjs build",
+    "dev": "npm run build && npx -y node@22.14.0 node_modules/wrangler/bin/wrangler.js dev --config .output/server/wrangler.json --port 3001",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:seed": "tsx src/db/seed.ts",
     "db:studio": "drizzle-kit studio"
   },
   "devDependencies": {
+    "@rolldown/binding-win32-x64-msvc": "^1.1.4",
     "drizzle-kit": "^0.31.10",
     "hono": "^4.12.9",
+    "jiti": "^2.7.0",
     "nitro": "latest",
     "tsx": "^4.20.6",
     "wrangler": "^4.107.0"
