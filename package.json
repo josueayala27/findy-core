@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "build": "npx -y node@22.14.0 node_modules/nitro/dist/cli/index.mjs build",
-    "dev": "npm run build && npx -y node@22.14.0 node_modules/wrangler/bin/wrangler.js dev --config .output/server/wrangler.json --port 3001",
+    "dev": "npm run build && node scripts/sync-dev-vars.mjs && npx -y node@22.14.0 node_modules/wrangler/bin/wrangler.js dev --config .output/server/wrangler.json --port 3001",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:seed": "tsx src/db/seed.ts",
