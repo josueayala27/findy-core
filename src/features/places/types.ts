@@ -41,6 +41,10 @@ export interface Place {
     googlePlaceId: string | null;
   };
   trending: PlaceTrending;
+  rating: {
+    avg: number | null;
+    count: number;
+  };
   mentions: PlaceMention[];
   createdAt: string;
   updatedAt: string;

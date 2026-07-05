@@ -13,7 +13,10 @@ import {
   boolean,
   numeric,
   date,
+  smallint,
+  check,
 } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 export const users = pgTable("users", {
   id: uuid().defaultRandom().primaryKey().notNull(),
@@ -83,6 +86,8 @@ export const places = pgTable("places", {
   totalComments: bigint("total_comments", { mode: "number" }).default(0).notNull(),
   totalShares: bigint("total_shares", { mode: "number" }).default(0).notNull(),
   totalBookmarks: bigint("total_bookmarks", { mode: "number" }).default(0).notNull(),
+  ratingAvg: numeric("rating_avg", { precision: 3, scale: 2 }),
+  ratingCount: integer("rating_count").default(0).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true, mode: "string" }).defaultNow().notNull(),
 }, (table) => [
@@ -167,4 +172,29 @@ export const placeListItems = pgTable("place_list_items", {
     name: "place_list_items_place_id_fkey",
   }).onDelete("cascade"),
   unique("place_list_items_list_id_place_id_key").on(table.listId, table.placeId),
+]);
+
+export const placeReviews = pgTable("place_reviews", {
+  id: uuid().defaultRandom().primaryKey().notNull(),
+  userId: uuid("user_id").notNull(),
+  placeId: uuid("place_id").notNull(),
+  rating: smallint().notNull(),
+  comment: text(),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "string" }).defaultNow().notNull(),
+}, (table) => [
+  index("place_reviews_place_id_idx").using("btree", table.placeId.asc().nullsLast().op("uuid_ops")),
+  index("place_reviews_user_id_idx").using("btree", table.userId.asc().nullsLast().op("uuid_ops")),
+  foreignKey({
+    columns: [table.userId],
+    foreignColumns: [users.id],
+    name: "place_reviews_user_id_fkey",
+  }).onDelete("cascade"),
+  foreignKey({
+    columns: [table.placeId],
+    foreignColumns: [places.id],
+    name: "place_reviews_place_id_fkey",
+  }).onDelete("cascade"),
+  unique("place_reviews_user_id_place_id_key").on(table.userId, table.placeId),
+  check("place_reviews_rating_check", sql`${table.rating} BETWEEN 1 AND 5`),
 ]);

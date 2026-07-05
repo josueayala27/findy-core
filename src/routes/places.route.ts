@@ -52,6 +52,10 @@ function toPlace(row: PlaceRow, mentions: MentionRow[]): Place {
       totalShares: row.totalShares,
       totalBookmarks: row.totalBookmarks,
     },
+    rating: {
+      avg: row.ratingAvg !== null ? Number(row.ratingAvg) : null,
+      count: row.ratingCount,
+    },
     mentions: mentions.map(toMention),
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,

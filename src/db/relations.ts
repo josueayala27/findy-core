@@ -1,10 +1,11 @@
 import { relations } from "drizzle-orm/relations";
-import { users, savedPlaces, passwordResetOtps, places, placeMentions, placeLists, placeListItems } from "./schema";
+import { users, savedPlaces, passwordResetOtps, places, placeMentions, placeLists, placeListItems, placeReviews } from "./schema";
 
 export const usersRelations = relations(users, ({ many }) => ({
   savedPlaces: many(savedPlaces),
   passwordResetOtps: many(passwordResetOtps),
   placeLists: many(placeLists),
+  placeReviews: many(placeReviews),
 }));
 
 export const savedPlacesRelations = relations(savedPlaces, ({ one }) => ({
@@ -24,6 +25,7 @@ export const passwordResetOtpsRelations = relations(passwordResetOtps, ({ one })
 export const placesRelations = relations(places, ({ many }) => ({
   placeMentions: many(placeMentions),
   placeListItems: many(placeListItems),
+  placeReviews: many(placeReviews),
 }));
 
 export const placeMentionsRelations = relations(placeMentions, ({ one }) => ({
@@ -39,6 +41,17 @@ export const placeListsRelations = relations(placeLists, ({ one, many }) => ({
     references: [users.id],
   }),
   items: many(placeListItems),
+}));
+
+export const placeReviewsRelations = relations(placeReviews, ({ one }) => ({
+  user: one(users, {
+    fields: [placeReviews.userId],
+    references: [users.id],
+  }),
+  place: one(places, {
+    fields: [placeReviews.placeId],
+    references: [places.id],
+  }),
 }));
 
 export const placeListItemsRelations = relations(placeListItems, ({ one }) => ({

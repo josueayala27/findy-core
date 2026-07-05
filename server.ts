@@ -5,6 +5,7 @@ import { meRoute } from "./src/routes/me.route";
 import { placesRoute } from "./src/routes/places.route";
 import { clickedPlacesRoute } from "./src/routes/clicked-places.route";
 import { placeListsRoute, sharedPlaceListsRoute } from "./src/routes/place-lists.route";
+import { placeReviewsRoute, myReviewsRoute } from "./src/routes/place-reviews.route";
 
 import { errorHandler } from "./src/middleware/error-handler";
 
@@ -26,6 +27,8 @@ app.get("/", (c) => c.text("Hello, Hono with Nitro!"));
 
 app.route("/auth", authRoute);
 app.route("/me", meRoute);
+app.route("/me", myReviewsRoute);
+app.route("/places", placeReviewsRoute);
 app.route("/places", placesRoute);
 app.route("/clicked-places", clickedPlacesRoute);
 app.route("/place-lists", placeListsRoute);
